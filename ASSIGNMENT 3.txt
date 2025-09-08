@@ -1,0 +1,728 @@
+-------------------------------------------------
+QUESTION 1
+-------------------------------------------------
+#include <iostream>
+using namespace std;
+
+#define MAX 5
+
+class Stack {
+private:
+    int arr[MAX];
+    int top;
+
+public:
+    Stack() {
+        top = -1;
+    }
+
+    bool isFull() {
+        return top == MAX - 1;
+    }
+
+    bool isEmpty() {
+        return top == -1;
+    }
+
+    void push(int val) {
+        if (isFull()) {
+            cout << "Stack is full!" << endl;
+        } else {
+            arr[++top] = val;
+            cout << val << " pushed into stack." << endl;
+        }
+    }
+
+    void pop() {
+        if (isEmpty()) {
+            cout << "Stack is empty!" << endl;
+        } else {
+            cout << "Popped: " << arr[top--] << endl;
+        }
+    }
+
+    int peek() {
+        if (!isEmpty())
+            return arr[top];
+        else {
+            cout << "Stack is empty!" << endl;
+            return -1;
+        }
+    }
+
+    void display() {
+        if (isEmpty()) {
+            cout << "Stack is empty!" << endl;
+        } else {
+            cout << "Stack elements: ";
+            for (int i = top; i >= 0; i--) {
+                cout << arr[i] << " ";
+            }
+            cout << endl;
+        }
+    }
+};
+
+int main() {
+    Stack s;
+    int choice, val;
+
+    do {
+        cout << "\n--- Stack Menu ---\n";
+        cout << "1. Push\n";
+        cout << "2. Pop\n";
+        cout << "3. Peek (Top element)\n";
+        cout << "4. Check if Empty\n";
+        cout << "5. Check if Full\n";
+        cout << "6. Display Stack\n";
+        cout << "7. Exit\n";
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+        switch (choice) {
+        case 1:
+            cout << "Enter value to push: ";
+            cin >> val;
+            s.push(val);
+            break;
+        case 2:
+            s.pop();
+            break;
+        case 3:
+            val = s.peek();
+            if (val != -1)
+                cout << "Top element is: " << val << endl;
+            break;
+        case 4:
+            cout << (s.isEmpty() ? "Stack is empty" : "Stack is not empty") << endl;
+            break;
+        case 5:
+            cout << (s.isFull() ? "Stack is full" : "Stack is not full") << endl;
+            break;
+        case 6:
+            s.display();
+            break;
+        case 7:
+            cout << "Exiting program..." << endl;
+            break;
+        default:
+            cout << "Invalid choice!" << endl;
+        }
+    } while (choice != 7);
+
+    return 0;
+}
+
+
+-------------------------------------------------------------
+QUESTION 2
+-------------------------------------------------------------
+
+#include <iostream>
+using namespace std;
+
+#define SIZE 100
+
+class STACK {
+    char arr[SIZE];
+    int top;
+
+public:
+    STACK() {
+        top = -1;
+    }
+
+    void push(char val) {
+        if (top == SIZE - 1) {
+            cout << "Stack is full" << endl;
+        } else {
+            arr[++top] = val;
+        }
+    }
+
+    char pop() {
+        if (top == -1) {
+            cout << "Stack is empty" << endl;
+            return '\0';
+        } else {
+            return arr[top--];
+        }
+    }
+
+    bool isEmpty() {
+        return top == -1;
+    }
+};
+
+int main() {
+    STACK s;
+    string val;
+
+    cout << "Enter string: ";
+    cin >> val;
+
+    
+    for (char c : val) {
+        s.push(c);
+    }
+
+    cout << "Reversed string = ";
+   
+    while (!s.isEmpty()) {
+        cout << s.pop();
+    }
+    cout << endl;
+
+    return 0;
+}
+
+-------------------------------------------------------------
+QUESTION 3
+-------------------------------------------------------------
+#include <iostream>
+using namespace std;
+#define SIZE 10
+
+class STACK {
+    char arr[SIZE];
+    int top;
+
+public:
+    STACK() { top = -1; }
+
+    void push(char val) {
+        if (top == SIZE - 1) {
+            cout << "Stack is full" << endl;
+        } else {
+            arr[++top] = val;
+        }
+    }
+
+    char pop() {
+        if (top == -1) {
+            return '\0';
+        } else {
+            return arr[top--];
+        }
+    }
+
+    bool isEmpty() { return top == -1; }
+};
+
+bool isMatching(char open, char close) {
+    return (open == '(' && close == ')') ||
+           (open == '{' && close == '}') ||
+           (open == '[' && close == ']');
+}
+
+int main() {
+    STACK s;
+    string val;
+
+    cout << "Enter expression: ";
+    cin >> val;
+
+    for (char ch : val) {
+        if (ch == '(' || ch == '{' || ch == '[') {
+            s.push(ch);
+        } else if (ch == ')' || ch == '}' || ch == ']') {
+            if (s.isEmpty()) {
+                cout << "Extra closing bracket found: " << ch << endl;
+                return 0;
+            }
+            char popped = s.pop();
+            if (!isMatching(popped, ch)) {
+                cout << "Unmatched brackets: " << popped << " and " << ch << endl;
+                return 0;
+            }
+        }
+    }
+
+    if (s.isEmpty()) {
+        cout << "Balanced brackets" << endl;
+    } else {
+        cout << "Unbalanced brackets: Extra opening bracket(s)" << endl;
+    }
+
+    return 0;
+}
+
+
+-----------------------------------------------------
+QUESTION 4 
+-----------------------------------------------------
+
+#include <iostream>
+using namespace std;
+#define SIZE 20
+
+class STACK {
+    char arr[SIZE];
+    int top;
+
+public:
+    STACK() { top = -1; }
+
+    void push(char val) {
+        if (top == SIZE - 1) {
+            cout << "Stack is full" << endl;
+        } else {
+            arr[++top] = val;
+        }
+    }
+
+    char pop() {
+        if (top == -1) {
+            return '\0';
+        } else {
+            return arr[top--];
+        }
+    }
+
+    char peek() {
+        if (top == -1) {
+            return '\0';
+        }
+        return arr[top];
+    }
+
+    bool isEmpty() { return top == -1; }
+};
+
+int precedence(char op) {
+    if (op == '+' || op == '-') return 1;
+    if (op == '*' || op == '/') return 2;
+    if (op == '^') return 3;
+    return 0;
+}
+
+int main() {
+    STACK s;
+    string val;
+    cout << "Enter infix expression: ";
+    cin >> val;
+
+    string postfix;
+
+    for (char ch : val) {
+        if ((ch >= '0' && ch <= '9') ||
+            (ch >= 'a' && ch <= 'z') ||
+            (ch >= 'A' && ch <= 'Z')) {
+            postfix += ch;
+        }
+        else if (ch == '(') {
+            s.push(ch);
+        }
+        else if (ch == ')') {
+            while (!s.isEmpty() && s.peek() != '(') {
+                postfix += s.pop();
+            }
+            s.pop();
+        }
+        else {
+            while (!s.isEmpty() && precedence(s.peek()) >= precedence(ch)) {
+                postfix += s.pop();
+            }
+            s.push(ch);
+        }
+    }
+
+    while (!s.isEmpty()) {
+        postfix += s.pop();
+    }
+
+    cout << "Postfix expression: " << postfix << endl;
+    return 0;
+}
+
+----------------------------------------------------------
+QUESTION 5
+----------------------------------------------------------
+
+#include <iostream>
+#include <cmath>
+using namespace std;
+#define SIZE 20  
+
+class STACK {
+    char arr[SIZE];
+    int top;
+
+public:
+    STACK() { top = -1; }
+
+    void push(char val) {
+        if (top == SIZE - 1) {
+            cout << "stack is full" << endl;
+        } else {
+            arr[++top] = val;
+        }
+    }
+
+    char pop() {
+        if (top == -1) {
+            return '\0';
+        } else {
+            return arr[top--];
+        }
+    }
+
+    char peek() {
+        if (top == -1) {
+            return '\0';
+        }
+        return arr[top];
+    }
+
+    bool isEmpty() { return top == -1; }
+};
+
+int precedence(char op) {
+    if ((op == '+') || (op == '-')) return 1;
+    if ((op == '*') || (op == '/')) return 2;
+    if (op == '^') return 3;
+    return 0;
+}
+
+class intSTACK {
+    int arr[SIZE];
+    int top;
+
+public:
+    intSTACK() { top = -1; }
+
+    void push(int val) {
+        if (top == SIZE - 1) {
+            cout << "stack is full" << endl;
+        } else {
+            arr[++top] = val;
+        }
+    }
+
+    int pop() {
+        if (top == -1) {
+            return -1; 
+        } else {
+            return arr[top--];
+        }
+    }
+
+    bool isEmpty() { return top == -1; }
+};
+
+int main() {
+    STACK s;
+    string val;
+    cout << "enter infix expression: ";
+    getline(cin, val);
+
+    string postfix;
+
+    for (char ch : val) {
+        if ((ch >= '0' && ch <= '9') ||
+            (ch >= 'a' && ch <= 'z') ||
+            (ch >= 'A' && ch <= 'Z')) {
+            postfix = postfix + ch;
+        } else if (ch == '(') {
+            s.push(ch);
+        } else if (ch == ')') {
+            while (!s.isEmpty() && s.peek() != '(') {
+                postfix = postfix + s.pop();
+            }
+            s.pop();
+        } else if ((ch == '+') || (ch == '-') ||
+                   (ch == '*') || (ch == '/') || (ch == '^')) {
+            while (!s.isEmpty() && precedence(s.peek()) >= precedence(ch)) {
+                postfix = postfix + s.pop();
+            }
+            s.push(ch);
+        }
+    }
+    while (!s.isEmpty()) {
+        postfix = postfix + s.pop();
+    }
+
+    cout << "Postfix expression: " << postfix << endl;
+
+    intSTACK t;
+
+    for (char ch : postfix) {
+        if ((ch >= '0' && ch <= '9')) {
+            t.push(ch - '0');
+        } else if ((ch == '+') || (ch == '-') ||
+                   (ch == '*') || (ch == '/') || (ch == '^')) {
+            int operand2 = t.pop();
+            int operand1 = t.pop();
+
+            int result = 0;
+
+            switch (ch) {
+                case '+': result = operand1 + operand2; break;
+                case '-': result = operand1 - operand2; break;
+                case '*': result = operand1 * operand2; break;
+                case '/': result = operand1 / operand2; break;
+                case '^': result = pow(operand1, operand2); break;
+            }
+            t.push(result);
+        }
+    }
+    cout << "result: " << t.pop() << endl;
+}
+
+
+--------------------------------------------------
+ADDITIONAL QUESTION BULLET POINT 1
+--------------------------------------------------
+
+vector<int> Solution::prevSmaller(vector<int> &A)
+{
+    int n = A.size();
+    vector<int> val(n,-1);
+    stack<int> s;
+    
+    for(int i = 0; i < n ; i++)
+    {
+        while(!s.empty() && (A[i] <= A[s.top()]))
+        {
+            s.pop();
+        }
+        if(!s.empty())
+        {
+            val[i] = A[s.top()];
+        }
+        s.push(i);
+    }
+    return val;
+}
+
+
+----------------------------------------------------
+ADDITIONAL QUETSION BULLET POINT 2
+----------------------------------------------------
+
+class Solution {
+    vector<long long> s;
+    long long minEle;
+
+public:
+    Solution() {
+        s.clear();
+    }
+
+    
+    void push(int x) {
+        if (s.empty()) {
+            s.push_back(x);
+            minEle = x;
+        }
+        else if (x >= minEle) {
+            s.push_back(x);
+        }
+        else {
+            
+            s.push_back(2LL * x - minEle);
+            minEle = x;
+        }
+    }
+
+    
+    void pop() {
+        if (s.empty()) return;
+
+        long long t = s.back();
+        s.pop_back();
+
+        if (t < minEle) {
+            
+            minEle = 2LL * minEle - t;
+        }
+    }
+
+    
+    int peek() {
+        if (s.empty()) return -1;
+
+        long long t = s.back();
+        if (t < minEle) {
+            
+            return (int)minEle;
+        }
+        return (int)t;
+    }
+
+    
+    int getMin() {
+        if (s.empty()) return -1;
+        return (int)minEle;
+    }
+};
+
+
+----------------------------------------------------------------------
+ADDITIONAL QUESTION BULLET 3
+----------------------------------------------------------------------
+
+#include <bits/stdc++.h>
+using namespace std;
+
+class Solution {
+public:
+    bool isValid(string expr) {
+        stack<char> s;
+
+        for (char c : expr) {
+            if (c == '(' || c == '{' || c == '[') {
+                s.push(c);
+            }
+            else if (c == ')' || c == '}' || c == ']') {
+                if (s.empty()) return false;
+                char top = s.top();
+                s.pop();
+                if (!isMatching(top, c)) return false;
+            }
+        }
+        return s.empty();
+    }
+
+private:
+    bool isMatching(char open, char close) {
+        return (open == '(' && close == ')') ||
+               (open == '{' && close == '}') ||
+               (open == '[' && close == ']');
+    }
+};
+
+int main() {
+    Solution sol;
+    string expr;
+    cout << "Enter expression: ";
+    cin >> expr;
+
+    if (sol.isValid(expr))
+        cout << "Balanced Expression" << endl;
+    else
+        cout << "Not Balanced" << endl;
+
+    return 0;
+}
+
+
+
+----------------------------------------------------------------------
+ADDITIONAL QUESTION BULLET POINT 4
+----------------------------------------------------------------------
+
+class Solution {
+  public:
+    vector<int> nextLargerElement(vector<int>& arr) 
+    {
+        int n = arr.size();
+        vector<int> result(n, -1);  
+        stack<int> s;              
+        
+        for (int i = 0; i < n; i++) {
+            while (!s.empty() && arr[i] > arr[s.top()]) {
+                result[s.top()] = arr[i];
+                s.pop();
+            }
+            s.push(i);
+        }
+        return result;
+    }
+};
+
+
+--------------------------------------------------------------------
+ADDITIONAL QUESTION BULLET POINT 5
+--------------------------------------------------------------------
+
+#include <bits/stdc++.h>
+using namespace std;
+
+class Solution {
+public:
+    vector<int> dailyTemperatures(vector<int>& temperatures) {
+        int n = temperatures.size();
+        vector<int> answer(n, 0);
+        stack<int> s;
+
+        for (int i = 0; i < n; i++) {
+            while (!s.empty() && temperatures[i] > temperatures[s.top()]) {
+                int index = s.top();
+                s.pop();
+                answer[index] = i - index;
+            }
+            s.push(i);
+        }
+
+        return answer;
+    }
+};
+
+int main() {
+    Solution sol;
+    vector<int> temps = {73,74,75,71,69,72,76,73};
+    vector<int> res = sol.dailyTemperatures(temps);
+
+    cout << "Result: ";
+    for (int x : res) cout << x << " ";
+    cout << endl;
+    return 0;
+}
+
+-------------------------------------------------------------------
+ADDITIONAL QUESTIONS BULLET POINT 6
+-------------------------------------------------------------------
+
+#include <bits/stdc++.h>
+using namespace std;
+
+class Solution {
+public:
+    bool canBeSorted(vector<int>& AA) {
+        int NN = AA.size();
+        vector<int> BB;       
+        stack<int> SS;      
+
+       
+        vector<int> sortedAA = AA;
+        sort(sortedAA.begin(), sortedAA.end());
+
+        int targetIndex = 0;
+
+        
+        for (int i = 0; i < NN; i++) {
+            SS.push(AA[i]);  // operation 1
+
+            
+            while (!SS.empty() && SS.top() == sortedAA[targetIndex]) {
+                BB.push_back(SS.top()); 
+                SS.pop();
+                targetIndex++;
+            }
+        }
+
+        
+        while (!SS.empty() && SS.top() == sortedAA[targetIndex]) {
+            BB.push_back(SS.top());
+            SS.pop();
+            targetIndex++;
+        }
+
+       
+        return (targetIndex == NN);
+    }
+};
+
+int main() {
+    Solution sol;
+
+    vector<int> AA1 = {3, 1, 2};
+    cout << (sol.canBeSorted(AA1) ? "YES" : "NO") << endl;
+
+    vector<int> AA2 = {3, 2, 1};
+    cout << (sol.canBeSorted(AA2) ? "YES" : "NO") << endl;
+
+    return 0;
+}
+
