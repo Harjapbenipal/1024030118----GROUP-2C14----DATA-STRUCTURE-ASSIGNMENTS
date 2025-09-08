@@ -135,7 +135,7 @@ int removeduplicate(int arr[], int size) {
             temp[j++] = arr[i];
         }
     }
-    temp[j++] = arr[size - 1];  // Include the last element
+    temp[j++] = arr[size - 1];
     for (int i = 0; i < j; i++) {
         arr[i] = temp[i];
     }
@@ -292,3 +292,4 @@ int main() {
 
     return 0;
 }
+
