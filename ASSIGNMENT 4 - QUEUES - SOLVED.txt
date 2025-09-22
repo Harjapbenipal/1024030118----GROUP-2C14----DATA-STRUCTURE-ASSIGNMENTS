@@ -1,0 +1,487 @@
+---------------------------------------------------------------------------------------------
+QUESTION 1 -- Develop a menu driven program demonstrating the following operations on simple Queues: enqueue(), dequeue(), isEmpty(), isFull(), display(), and peek().
+---------------------------------------------------------------------------------------------
+#include <iostream>
+using namespace std;
+#define MAX 5
+
+int queue[MAX];
+int front = -1;
+int rear = -1;
+
+bool isFull()
+{
+    return (rear == MAX - 1);
+}
+
+bool isEmpty()
+{
+    return (front == -1 || front > rear);
+}
+
+void enqueue(int x)
+{
+    if(isFull())
+    {
+        cout << "Queue is full \n"<<endl;
+        return;
+    }
+    
+    if(front == -1)
+    {
+        front = 0;
+        rear = 0;
+    }
+    
+    else 
+    {
+        rear = rear + 1;
+    }
+    queue[rear] = x;
+}
+
+int dequeue() 
+{
+    if(isEmpty())
+    {
+        cout << "Queue is empty" <<endl;
+        return -1;
+    }
+    else
+    {
+        int x = queue[front];
+        front = front + 1;
+        if (front > rear)
+        {
+            front = -1;
+            rear = -1;
+        }
+        return x;
+    }
+}
+
+int display()
+{
+    if(isEmpty())
+    {
+        cout << "Queue is empty \n" << endl;
+        return -1;
+    }
+    
+    for(int i = front ; i <= rear ; i++)
+    {
+        cout << queue[i] << " " ;
+    }
+    return 0;
+}
+
+int peek()
+{
+    if(isEmpty())
+    {
+        cout << "Queue is empty \n" << endl;
+        return -1;
+    }
+    
+    else
+    {
+        return queue[front];
+    }
+}
+
+int main()
+{
+    enqueue(10);
+    cout << "front element of queue: "<< peek() << endl;
+    enqueue(20);
+    enqueue(30);
+    display();
+    cout << endl;
+    cout << "Dequeued: " << dequeue() <<endl;
+    cout << "front element of queue: "<< peek() << endl;
+    cout << "Dequeued: " << dequeue() <<endl;
+    cout << "front element of queue: "<< peek() << endl;
+    cout << "Dequeued: " << dequeue() <<endl;
+    cout << "front element of queue: "<< peek() << endl;
+    return 0;
+}
+
+
+----------------------------------------------------------------------------------------------
+QUESTION 2 -- Develop a menu driven program demonstrating the following operations on Circular Queues: enqueue(), dequeue(), isEmpty(), isFull(), display(), and peek().
+----------------------------------------------------------------------------------------------
+#include <iostream>
+#include <limits>
+#include <climits>
+#include <sstream>
+using namespace std;
+
+#define SIZE 5
+
+class CircularQueue {
+    int items[SIZE];
+    int front, rear;
+
+public:
+    CircularQueue() {
+        front = -1;
+        rear = -1;
+    }
+
+    bool isFull() {
+        return ((front == 0 && rear == SIZE - 1) || (rear + 1) % SIZE == front);
+    }
+
+    bool isEmpty() {
+        return (front == -1);
+    }
+
+    void enqueue(int element) {
+        if (isFull()) {
+            cout << "Queue is full! Cannot insert " << element << endl;
+            return;
+        }
+        if (front == -1)
+            front = 0;
+        rear = (rear + 1) % SIZE;
+        items[rear] = element;
+        cout << element << " inserted." << endl;
+    }
+
+    void dequeue() {
+        if (isEmpty()) {
+            cout << "Queue is empty! Cannot dequeue." << endl;
+            return;
+        }
+        cout << items[front] << " removed." << endl;
+        if (front == rear)
+            front = rear = -1;
+        else
+            front = (front + 1) % SIZE;
+    }
+
+    void peek() {
+        if (isEmpty())
+            cout << "Queue is empty!" << endl;
+        else
+            cout << "Front element: " << items[front] << endl;
+    }
+
+    void display() {
+        if (isEmpty()) {
+            cout << "Queue is empty!" << endl;
+            return;
+        }
+        cout << "Queue elements: ";
+        int i = front;
+        while (true) {
+            cout << items[i] << " ";
+            if (i == rear)
+                break;
+            i = (i + 1) % SIZE;
+        }
+        cout << endl;
+    }
+};
+
+
+int getIntegerInput(const string& prompt, int min = INT_MIN, int max = INT_MAX) {
+    string input;
+    int value;
+    while (true) {
+        cout << prompt;
+        if (!getline(cin, input)) {
+            cin.clear();
+            continue;
+        }
+        stringstream ss(input);
+        if (ss >> value && ss.eof()) {
+            if (value >= min && value <= max)
+                return value;
+            else
+                cout << "Input out of range! Enter between " << min << " and " << max << ".\n";
+        } else {
+            cout << "Invalid input! Please enter an integer.\n";
+        }
+    }
+}
+
+int main() {
+    CircularQueue q;
+    int choice;
+
+    
+    string testInput = "1\n10\n1\n20\n4\n2\n4\n3\n5\n"; 
+    stringstream ss(testInput);
+    cin.rdbuf(ss.rdbuf());
+
+    do {
+        cout << "\n--- Circular Queue Menu ---\n";
+        cout << "1. Enqueue\n2. Dequeue\n3. Peek\n4. Display\n5. Exit\n";
+
+        choice = getIntegerInput("Enter choice (1-5): ", 1, 5);
+
+        switch (choice) {
+            case 1: {
+                int element = getIntegerInput("Enter element to enqueue: ");
+                q.enqueue(element);
+                break;
+            }
+            case 2:
+                q.dequeue();
+                break;
+            case 3:
+                q.peek();
+                break;
+            case 4:
+                q.display();
+                break;
+            case 5:
+                cout << "Exiting..." << endl;
+                break;
+        }
+
+    } while (choice != 5);
+
+    return 0;
+}
+
+
+----------------------------------------------------------------------------------------------
+QUESTION 3 -- Write a program interleave the first half of the queue with second half. Sample I/P: 4 7 11 20 5 9 Sample O/P: 4 20 7 5 11 9).
+----------------------------------------------------------------------------------------------
+#include <iostream>
+#include <queue>
+#include <stack>
+using namespace std;
+
+void interleaveQueue(queue<int>& q) {
+    if (q.empty()) return;
+
+    stack<int> s;
+    int n = q.size();
+    int half = n / 2;
+
+        for (int i = 0; i < half; i++) {
+        s.push(q.front());
+        q.pop();
+    }
+
+    
+    while (!s.empty()) {
+        q.push(s.top());
+        s.pop();
+    }
+
+    
+    for (int i = 0; i < half; i++) {
+        q.push(q.front());
+        q.pop();
+    }
+
+    
+    for (int i = 0; i < half; i++) {
+        s.push(q.front());
+        q.pop();
+    }
+
+    
+    while (!s.empty()) {
+        q.push(s.top());
+        s.pop();
+        q.push(q.front());
+        q.pop();
+    }
+}
+
+int main() {
+    queue<int> q;
+    int n, x;
+
+    cout << "Enter number of elements in queue: ";
+    cin >> n;
+
+    cout << "Enter elements of queue: ";
+    for (int i = 0; i < n; i++) {
+        cin >> x;
+        q.push(x);
+    }
+
+    interleaveQueue(q);
+
+    cout << "Interleaved Queue: ";
+    while (!q.empty()) {
+        cout << q.front() << " ";
+        q.pop();
+    }
+    cout << endl;
+
+    return 0;
+}
+
+
+-----------------------------------------------------------------------------------------------
+QUESTION 4 -- Write a program to find first non-repeating character in a string using Queue. Sample I/P: a a b c Sample O/P: a -1 b b
+-----------------------------------------------------------------------------------------------
+#include <iostream>
+#include <queue>
+#include <unordered_map>
+using namespace std;
+
+void firstNonRepeating(string str) {
+    queue<char> q;
+    unordered_map<char, int> freq;
+
+    for (char ch : str) {
+        
+        freq[ch]++;
+        
+        q.push(ch);
+
+        
+        while (!q.empty() && freq[q.front()] > 1) {
+            q.pop();
+        }
+
+        
+        if (q.empty())
+            cout << -1 << " ";
+        else
+            cout << q.front() << " ";
+    }
+    cout << endl;
+}
+
+int main() {
+    string input;
+    cout << "Enter a string: ";
+    cin >> input;
+
+    cout << "First non-repeating characters are:\n";
+    firstNonRepeating(input);
+
+    return 0;
+}
+
+-----------------------------------------------------------------------------------------------
+QUESTION 5 -- Write a program to implement a stack using 
+(a) Two queues and (b) One Queue
+-----------------------------------------------------------------------------------------------
+(a) STACK USING TWO QUEUES:
+-----------------------------------------------------------------------------------------------
+#include <iostream>
+#include <queue>
+using namespace std;
+
+class StackTwoQueues {
+    queue<int> q1, q2;
+
+public:
+    void push(int x) {
+        
+        q2.push(x);
+
+        
+        while (!q1.empty()) {
+            q2.push(q1.front());
+            q1.pop();
+        }
+
+        
+        swap(q1, q2);
+
+        cout << "Pushed: " << x << endl;
+    }
+
+    void pop() {
+        if (q1.empty()) {
+            cout << "Stack is empty\n";
+            return;
+        }
+        cout << "Popped: " << q1.front() << endl;
+        q1.pop();
+    }
+
+    int top() {
+        if (q1.empty()) {
+            cout << "Stack is empty\n";
+            return -1;
+        }
+        return q1.front();
+    }
+
+    bool empty() {
+        return q1.empty();
+    }
+};
+
+int main() {
+    StackTwoQueues st;
+    st.push(10);
+    st.push(20);
+    st.push(30);
+    cout << "Top: " << st.top() << endl;
+    st.pop();
+    cout << "Top: " << st.top() << endl;
+    return 0;
+}
+
+-----------------------------------------------------------------------------------------------
+(b) STACK USING ONE QUEUE:
+-----------------------------------------------------------------------------------------------
+#include <iostream>
+#include <queue>
+using namespace std;
+
+class StackOneQueue {
+    queue<int> q;
+
+public:
+    void push(int x) {
+        int size = q.size();
+        q.push(x);
+
+        
+        for (int i = 0; i < size; i++) {
+            q.push(q.front());
+            q.pop();
+        }
+
+        cout << "Pushed: " << x << endl;
+    }
+
+    void pop() {
+        if (q.empty()) {
+            cout << "Stack is empty\n";
+            return;
+        }
+        cout << "Popped: " << q.front() << endl;
+        q.pop();
+    }
+
+    int top() {
+        if (q.empty()) {
+            cout << "Stack is empty\n";
+            return -1;
+        }
+        return q.front();
+    }
+
+    bool empty() {
+        return q.empty();
+    }
+};
+
+int main() {
+    StackOneQueue st;
+    st.push(5);
+    st.push(15);
+    st.push(25);
+    cout << "Top: " << st.top() << endl;
+    st.pop();
+    cout << "Top: " << st.top() << endl;
+    return 0;
+}
+
+----------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------
