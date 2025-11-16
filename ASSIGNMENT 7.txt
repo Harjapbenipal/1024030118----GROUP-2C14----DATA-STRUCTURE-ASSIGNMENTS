@@ -1,0 +1,408 @@
+========================================================================
+UCS301 Data Structures Lab
+Assignment 7
+========================================================================
+QUESTION 1(a). Write a program to implement the following sorting techniques:
+Selection Sort
+========================================================================
+SOLUTION:
+========================================================================
+#include <iostream>
+using namespace std;
+
+void selectionSort(int arr[], int n) {
+    for (int i = 0; i < n - 1; i++) {
+        int minIndex = i;
+        for (int j = i + 1; j < n; j++) {
+            if (arr[j] < arr[minIndex])
+                minIndex = j;
+        }
+        swap(arr[i], arr[minIndex]);
+    }
+}
+
+int main() {
+    int n;
+    cout << "Enter number of elements: ";
+    cin >> n;
+
+    int arr[n];
+    cout << "Enter array elements:\n";
+    for (int i = 0; i < n; i++) cin >> arr[i];
+
+    selectionSort(arr, n);
+
+    cout << "Sorted array: ";
+    for (int i = 0; i < n; i++) cout << arr[i] << " ";
+}
+========================================================================
+========================================================================
+QUESTION 1(b). Write a program to implement the following sorting techniques:
+Insertion Sort
+========================================================================
+SOLUTION:
+========================================================================
+#include <iostream>
+using namespace std;
+
+void insertionSort(int arr[], int n) {
+    for (int i = 1; i < n; i++) {
+        int key = arr[i];
+        int j = i - 1;
+
+        while (j >= 0 && arr[j] > key) {
+            arr[j + 1] = arr[j];
+            j--;
+        }
+        arr[j + 1] = key;
+    }
+}
+
+int main() {
+    int n;
+    cout << "Enter number of elements: ";
+    cin >> n;
+
+    int arr[n];
+    cout << "Enter elements:\n";
+    for (int i = 0; i < n; i++) cin >> arr[i];
+
+    insertionSort(arr, n);
+
+    cout << "Sorted array: ";
+    for (int i = 0; i < n; i++) cout << arr[i] << " ";
+}
+
+
+========================================================================
+========================================================================
+QUESTION 1(c). Write a program to implement the following sorting techniques:
+Bubble Sort
+========================================================================
+SOLUTION:
+========================================================================
+#include <iostream>
+using namespace std;
+
+void bubbleSort(int arr[], int n) {
+    for (int i = 0; i < n - 1; i++) {
+        for (int j = 0; j < n - i - 1; j++) {
+            if (arr[j] > arr[j + 1])
+                swap(arr[j], arr[j + 1]);
+        }
+    }
+}
+
+int main() {
+    int n;
+    cout << "Enter number of elements: ";
+    cin >> n;
+
+    int arr[n];
+    cout << "Enter elements:\n";
+    for (int i = 0; i < n; i++) cin >> arr[i];
+
+    bubbleSort(arr, n);
+
+    cout << "Sorted array: ";
+    for (int i = 0; i < n; i++) cout << arr[i] << " ";
+}
+========================================================================
+========================================================================
+QUESTION 1(d). Write a program to implement the following sorting techniques:
+Merge Sort
+========================================================================
+SOLUTION:
+========================================================================
+#include <iostream>
+using namespace std;
+
+void merge(int arr[], int l, int m, int r) {
+    int n1 = m - l + 1;
+    int n2 = r - m;
+
+    int a[n1], b[n2];
+
+    for (int i = 0; i < n1; i++) a[i] = arr[l + i];
+    for (int i = 0; i < n2; i++) b[i] = arr[m + 1 + i];
+
+    int i = 0, j = 0, k = l;
+
+    while (i < n1 && j < n2) {
+        if (a[i] <= b[j])
+            arr[k++] = a[i++];
+        else
+            arr[k++] = b[j++];
+    }
+
+    while (i < n1) arr[k++] = a[i++];
+    while (j < n2) arr[k++] = b[j++];
+}
+
+void mergeSort(int arr[], int l, int r) {
+    if (l < r) {
+        int m = (l + r) / 2;
+
+        mergeSort(arr, l, m);
+        mergeSort(arr, m + 1, r);
+
+        merge(arr, l, m, r);
+    }
+}
+
+int main() {
+    int n;
+    cout << "Enter number of elements: ";
+    cin >> n;
+
+    int arr[n];
+    cout << "Enter elements:\n";
+    for (int i = 0; i < n; i++) cin >> arr[i];
+
+    mergeSort(arr, 0, n - 1);
+
+    cout << "Sorted array: ";
+    for (int i = 0; i < n; i++) cout << arr[i] << " ";
+}
+========================================================================
+========================================================================
+QUESTION 1(e). Write a program to implement the following sorting techniques:
+Quick Sort
+========================================================================
+SOLUTION:
+========================================================================
+#include <iostream>
+using namespace std;
+
+int partition(int arr[], int low, int high) {
+    int pivot = arr[high];
+    int i = low - 1;
+
+    for (int j = low; j < high; j++) {
+        if (arr[j] < pivot) {
+            i++;
+            swap(arr[i], arr[j]);
+        }
+    }
+
+    swap(arr[i + 1], arr[high]);
+    return i + 1;
+}
+
+void quickSort(int arr[], int low, int high) {
+    if (low < high) {
+        int pi = partition(arr, low, high);
+
+        quickSort(arr, low, pi - 1);
+        quickSort(arr, pi + 1, high);
+    }
+}
+
+int main() {
+    int n;
+    cout << "Enter number of elements: ";
+    cin >> n;
+
+    int arr[n];
+    cout << "Enter elements:\n";
+    for (int i = 0; i < n; i++) cin >> arr[i];
+
+    quickSort(arr, 0, n - 1);
+
+    cout << "Sorted array: ";
+    for (int i = 0; i < n; i++) cout << arr[i] << " ";
+}
+========================================================================
+========================================================================
+QUESTION 1: SINGLE PROGRAM CODE FOR ALL PARTS (a)-(e):
+========================================================================
+SOLUTION:
+========================================================================
+#include <iostream>
+using namespace std;
+
+void selectionSort(int arr[], int n) {
+    for (int i = 0; i < n - 1; i++) {
+        int minIndex = i;
+        for (int j = i + 1; j < n; j++) {
+            if (arr[j] < arr[minIndex])
+                minIndex = j;
+        }
+        swap(arr[i], arr[minIndex]);
+    }
+}
+
+void insertionSort(int arr[], int n) {
+    for (int i = 1; i < n; i++) {
+        int key = arr[i];
+        int j = i - 1;
+
+        while (j >= 0 && arr[j] > key) {
+            arr[j + 1] = arr[j];
+            j--;
+        }
+
+        arr[j + 1] = key;
+    }
+}
+
+void bubbleSort(int arr[], int n) {
+    for (int i = 0; i < n - 1; i++) {
+        for (int j = 0; j < n - i - 1; j++) {
+            if (arr[j] > arr[j + 1])
+                swap(arr[j], arr[j + 1]);
+        }
+    }
+}
+
+void merge(int arr[], int l, int m, int r) {
+    int n1 = m - l + 1;
+    int n2 = r - m;
+
+    int a[n1], b[n2];
+
+    for (int i = 0; i < n1; i++) a[i] = arr[l + i];
+    for (int i = 0; i < n2; i++) b[i] = arr[m + 1 + i];
+
+    int i = 0, j = 0, k = l;
+
+    while (i < n1 && j < n2) {
+        if (a[i] <= b[j])
+            arr[k++] = a[i++];
+        else
+            arr[k++] = b[j++];
+    }
+
+    while (i < n1) arr[k++] = a[i++];
+    while (j < n2) arr[k++] = b[j++];
+}
+
+void mergeSort(int arr[], int l, int r) {
+    if (l < r) {
+        int m = (l + r) / 2;
+
+        mergeSort(arr, l, m);
+        mergeSort(arr, m + 1, r);
+
+        merge(arr, l, m, r);
+    }
+}
+
+int partition(int arr[], int low, int high) {
+    int pivot = arr[high];
+    int i = low - 1;
+
+    for (int j = low; j < high; j++) {
+        if (arr[j] < pivot) {
+            i++;
+            swap(arr[i], arr[j]);
+        }
+    }
+
+    swap(arr[i + 1], arr[high]);
+    return i + 1;
+}
+
+void quickSort(int arr[], int low, int high) {
+    if (low < high) {
+        int pi = partition(arr, low, high);
+
+        quickSort(arr, low, pi - 1);
+        quickSort(arr, pi + 1, high);
+    }
+}
+
+int main() {
+    int n, choice;
+    cout << "Enter number of elements: ";
+    cin >> n;
+
+    int arr[n];
+    cout << "Enter elements:\n";
+    for (int i = 0; i < n; i++) cin >> arr[i];
+
+    cout << "\n====== SORTING MENU ======\n";
+    cout << "1. Selection Sort\n";
+    cout << "2. Insertion Sort\n";
+    cout << "3. Bubble Sort\n";
+    cout << "4. Merge Sort\n";
+    cout << "5. Quick Sort\n";
+    cout << "Enter your choice: ";
+    cin >> choice;
+
+    switch (choice) {
+        case 1: selectionSort(arr, n); break;
+        case 2: insertionSort(arr, n); break;
+        case 3: bubbleSort(arr, n); break;
+        case 4: mergeSort(arr, 0, n - 1); break;
+        case 5: quickSort(arr, 0, n - 1); break;
+        default: cout << "Invalid choice!\n"; return 0;
+    }
+
+    cout << "\nSorted Array: ";
+    for (int i = 0; i < n; i++) cout << arr[i] << " ";
+    cout << endl;
+
+    return 0;
+}
+=======================================================================
+=======================================================================
+
+QUESTION 2. Slightly Improved Selection Sort
+
+We know that the selection sort algorithm takes the minimum on every pass on the array and places it at its correct position.
+The idea is to also take the maximum on every pass and place it at its correct position.
+So in every pass, we keep track of both maximum and minimum, and the array becomes sorted from both ends.
+
+Implement this logic.
+========================================================================
+SOLUTION:
+========================================================================
+#include <iostream>
+using namespace std;
+
+void improvedSelectionSort(int arr[], int n) {
+    int start = 0, end = n - 1;
+
+    while (start < end) {
+        int minIndex = start;
+        int maxIndex = end;
+
+        if (arr[minIndex] > arr[maxIndex])
+            swap(arr[minIndex], arr[maxIndex]);
+
+        for (int i = start + 1; i < end; i++) {
+            if (arr[i] < arr[minIndex])
+                minIndex = i;
+            else if (arr[i] > arr[maxIndex])
+                maxIndex = i;
+        }
+
+        swap(arr[start], arr[minIndex]);
+
+        if (maxIndex == start)
+            maxIndex = minIndex;
+
+        swap(arr[end], arr[maxIndex]);
+
+        start++;
+        end--;
+    }
+}
+
+int main() {
+    int n;
+    cout << "Enter number of elements: ";
+    cin >> n;
+
+    int arr[n];
+    cout << "Enter elements:\n";
+    for (int i = 0; i < n; i++) cin >> arr[i];
+
+    improvedSelectionSort(arr, n);
+
+    cout << "Sorted array: ";
+    for (int i = 0; i < n; i++) cout << arr[i] << " ";
+}
+========================================================================
+========================================================================
