@@ -1,0 +1,500 @@
+=====================================================================================================================================
+UCS301 – Data Structures Lab
+Assignment 9 (Graphs)
+=====================================================================================================================================
+QUESTION:
+
+A graph G is defined as a pair (V, E) where V is the set of nodes/vertices and E is the set of edges connecting pairs of vertices.
+Graphs may be directed or undirected, weighted or unweighted.
+They can be represented using an adjacency matrix, adjacency list, or edge list.
+
+Write programs to implement the following graph algorithms:
+Breadth-First Search (BFS)
+======================================================================================================================================
+SOLUTION:
+======================================================================================================================================
+#include <iostream>
+using namespace std;
+
+#define MAX 100
+
+class Queue {
+private:
+    int arr[MAX];
+    int front, rear;
+public:
+    Queue() {
+        front = rear = -1;
+    }
+
+    bool isEmpty() {
+        return (front == -1 || front > rear);
+    }
+
+    void enqueue(int x) {
+        if (rear == MAX - 1) {
+            cout << "Queue overflow\n";
+            return;
+        }
+        if (front == -1) front = 0;
+        arr[++rear] = x;
+    }
+
+    int dequeue() {
+        if (isEmpty()) {
+            cout << "Queue underflow\n";
+            return -1;
+        }
+        return arr[front++];
+    }
+};
+
+class Graph {
+public:
+    int adj[MAX][MAX];
+    int vertices;
+
+    Graph(int v) {
+        vertices = v;
+
+        
+        for (int i = 0; i < v; i++)
+            for (int j = 0; j < v; j++)
+                adj[i][j] = 0;
+    }
+
+    
+    void addEdge(int u, int v) {
+        adj[u][v] = 1;
+        adj[v][u] = 1;
+    }
+
+    void BFS(int start) {
+        bool visited[MAX] = {false};
+        Queue q;
+
+        visited[start] = true;
+        q.enqueue(start);
+
+        cout << "BFS Traversal: ";
+
+        while (!q.isEmpty()) {
+            int node = q.dequeue();
+            cout << node << " ";
+
+            
+            for (int i = 0; i < vertices; i++) {
+                if (adj[node][i] == 1 && !visited[i]) {
+                    visited[i] = true;
+                    q.enqueue(i);
+                }
+            }
+        }
+        cout << endl;
+    }
+};
+
+int main() {
+    int V, E;
+    cout << "Enter number of vertices: ";
+    cin >> V;
+
+    Graph g(V);
+
+    cout << "Enter number of edges: ";
+    cin >> E;
+
+    cout << "Enter edges (u v):\n";
+    for (int i = 0; i < E; i++) {
+        int u, v;
+        cin >> u >> v;
+        g.addEdge(u, v);
+    }
+
+    int start;
+    cout << "Enter starting vertex for BFS: ";
+    cin >> start;
+
+    g.BFS(start);
+
+    return 0;
+}
+======================================================================================================================================
+======================================================================================================================================
+QUESTION:
+
+A graph G is defined as a pair (V, E) where V is the set of nodes/vertices and E is the set of edges connecting pairs of vertices.
+Graphs may be directed or undirected, weighted or unweighted.
+They can be represented using an adjacency matrix, adjacency list, or edge list.
+
+Write programs to implement the following graph algorithms:
+Depth-First Search (DFS)
+=======================================================================================================================================
+SOLUTION:
+=======================================================================================================================================
+#include <iostream>
+using namespace std;
+
+#define MAX 100
+
+class Graph {
+public:
+    int adj[MAX][MAX];
+    int vertices;
+
+    Graph(int v) {
+        vertices = v;
+
+        
+        for (int i = 0; i < v; i++)
+            for (int j = 0; j < v; j++)
+                adj[i][j] = 0;
+    }
+
+    
+    void addEdge(int u, int v) {
+        adj[u][v] = 1;
+        adj[v][u] = 1;
+    }
+
+    
+    void DFSUtil(int node, bool visited[]) {
+        visited[node] = true;
+        cout << node << " ";
+
+        
+        for (int i = 0; i < vertices; i++) {
+            if (adj[node][i] == 1 && !visited[i]) {
+                DFSUtil(i, visited);
+            }
+        }
+    }
+
+    
+    void DFS(int start) {
+        bool visited[MAX] = {false};
+
+        cout << "DFS Traversal: ";
+        DFSUtil(start, visited);
+        cout << endl;
+    }
+};
+
+int main() {
+    int V, E;
+    cout << "Enter number of vertices: ";
+    cin >> V;
+
+    Graph g(V);
+
+    cout << "Enter number of edges: ";
+    cin >> E;
+
+    cout << "Enter edges (u v):\n";
+    for (int i = 0; i < E; i++) {
+        int u, v;
+        cin >> u >> v;
+        g.addEdge(u, v);
+    }
+
+    int start;
+    cout << "Enter starting vertex for DFS: ";
+    cin >> start;
+
+    g.DFS(start);
+
+    return 0;
+}
+=========================================================================================================================================
+=========================================================================================================================================
+QUESTION:
+
+A graph G is defined as a pair (V, E) where V is the set of nodes/vertices and E is the set of edges connecting pairs of vertices.
+Graphs may be directed or undirected, weighted or unweighted.
+They can be represented using an adjacency matrix, adjacency list, or edge list.
+
+Write programs to implement the following graph algorithms:
+Minimum Spanning Tree (Kruskal and Prim)
+==========================================================================================================================================
+SOLUTION:
+==========================================================================================================================================
+1. KRUSKAL'S ALGORITHM
+==========================================================================================================================================
+#include <iostream>
+#include <algorithm>
+using namespace std;
+
+#define MAX 100
+
+
+struct Edge {
+    int u, v, w;
+};
+
+
+bool compare(Edge a, Edge b) {
+    return a.w < b.w;
+}
+
+
+int parent[MAX];
+
+int find(int x) {
+    if (parent[x] == x)
+        return x;
+    return parent[x] = find(parent[x]);
+}
+
+void unionSet(int a, int b) {
+    a = find(a);
+    b = find(b);
+    parent[a] = b;
+}
+
+int main() {
+    int V, E;
+    cout << "Enter number of vertices: ";
+    cin >> V;
+
+    cout << "Enter number of edges: ";
+    cin >> E;
+
+    Edge edges[MAX];
+
+    cout << "Enter edges (u v w):\n";
+    for (int i = 0; i < E; i++) {
+        cin >> edges[i].u >> edges[i].v >> edges[i].w;
+    }
+
+    
+    for (int i = 0; i < V; i++)
+        parent[i] = i;
+
+    
+    sort(edges, edges + E, compare);
+
+    cout << "\nKruskal's MST Edges:\n";
+    int mst_weight = 0;
+
+    for (int i = 0; i < E; i++) {
+        int u = edges[i].u;
+        int v = edges[i].v;
+
+        
+        if (find(u) != find(v)) {
+            cout << u << " - " << v << "  (Weight = " << edges[i].w << ")\n";
+            mst_weight += edges[i].w;
+            unionSet(u, v);
+        }
+    }
+
+    cout << "\nTotal Weight of MST: " << mst_weight << endl;
+
+    return 0;
+}
+==============================================================================================================================================
+==============================================================================================================================================
+2. PRIM'S ALGORITHM:
+==============================================================================================================================================
+#include <iostream>
+using namespace std;
+
+#define MAX 100
+#define INF 999999
+
+class Graph {
+public:
+    int adj[MAX][MAX];
+    int vertices;
+
+    Graph(int v) {
+        vertices = v;
+
+        for (int i = 0; i < v; i++)
+            for (int j = 0; j < v; j++)
+                adj[i][j] = 0;
+    }
+
+    void addEdge(int u, int v, int w) {
+        adj[u][v] = w;
+        adj[v][u] = w;
+    }
+
+    void primMST() {
+        int parent[MAX]; 
+        int key[MAX];
+        bool inMST[MAX];
+
+        for (int i = 0; i < vertices; i++) {
+            key[i] = INF;
+            inMST[i] = false;
+        }
+
+        key[0] = 0;     
+        parent[0] = -1;
+
+        for (int count = 0; count < vertices - 1; count++) {
+
+            int minKey = INF, u = -1;
+
+            for (int v = 0; v < vertices; v++) {
+                if (!inMST[v] && key[v] < minKey) {
+                    minKey = key[v];
+                    u = v;
+                }
+            }
+
+            inMST[u] = true;
+
+            for (int v = 0; v < vertices; v++) {
+                if (adj[u][v] && !inMST[v] && adj[u][v] < key[v]) {
+                    parent[v] = u;
+                    key[v] = adj[u][v];
+                }
+            }
+        }
+
+        cout << "\nPrim's MST Edges:\n";
+        int total_weight = 0;
+
+        for (int i = 1; i < vertices; i++) {
+            cout << parent[i] << " - " << i << "  (Weight = " << adj[i][parent[i]] << ")\n";
+            total_weight += adj[i][parent[i]];
+        }
+
+        cout << "\nTotal Weight of MST: " << total_weight << endl;
+    }
+};
+
+int main() {
+    int V, E;
+    cout << "Enter number of vertices: ";
+    cin >> V;
+
+    Graph g(V);
+
+    cout << "Enter number of edges: ";
+    cin >> E;
+
+    cout << "Enter edges (u v w):\n";
+    for (int i = 0; i < E; i++) {
+        int u, v, w;
+        cin >> u >> v >> w;
+        g.addEdge(u, v, w);
+    }
+
+    g.primMST();
+
+    return 0;
+}
+
+=============================================================================================================================================
+=============================================================================================================================================
+QUESTION:
+
+A graph G is defined as a pair (V, E) where V is the set of nodes/vertices and E is the set of edges connecting pairs of vertices.
+Graphs may be directed or undirected, weighted or unweighted.
+They can be represented using an adjacency matrix, adjacency list, or edge list.
+
+Write programs to implement the following graph algorithms:
+Dijkstra’s Shortest Path Algorithm
+==============================================================================================================================================
+SOLUTION:
+==============================================================================================================================================
+#include <iostream>
+using namespace std;
+
+#define MAX 100
+#define INF 999999
+
+class Graph {
+public:
+    int adj[MAX][MAX];
+    int vertices;
+
+    Graph(int v) {
+        vertices = v;
+
+        for (int i = 0; i < v; i++) {
+            for (int j = 0; j < v; j++) {
+                adj[i][j] = 0;
+            }
+        }
+    }
+
+    void addEdge(int u, int v, int w) {
+        adj[u][v] = w;     
+        adj[v][u] = w;
+    }
+
+    void dijkstra(int start) {
+        int dist[MAX];
+        bool visited[MAX];
+
+        
+        for (int i = 0; i < vertices; i++) {
+            dist[i] = INF;
+            visited[i] = false;
+        }
+
+        dist[start] = 0;
+
+        for (int count = 0; count < vertices - 1; count++) {
+
+            int minDist = INF, u = -1;
+
+            
+            for (int i = 0; i < vertices; i++) {
+                if (!visited[i] && dist[i] < minDist) {
+                    minDist = dist[i];
+                    u = i;
+                }
+            }
+
+            visited[u] = true;
+
+            
+            for (int v = 0; v < vertices; v++) {
+                if (adj[u][v] && !visited[v] &&
+                    dist[u] + adj[u][v] < dist[v]) {
+
+                    dist[v] = dist[u] + adj[u][v];
+                }
+            }
+        }
+
+        
+        cout << "\nShortest distances from vertex " << start << ":\n";
+        for (int i = 0; i < vertices; i++) {
+            cout << "To " << i << " → " << dist[i] << endl;
+        }
+    }
+};
+
+int main() {
+    int V, E;
+    cout << "Enter number of vertices: ";
+    cin >> V;
+
+    Graph g(V);
+
+    cout << "Enter number of edges: ";
+    cin >> E;
+
+    cout << "Enter edges (u v w):\n";
+    for (int i = 0; i < E; i++) {
+        int u, v, w;
+        cin >> u >> v >> w;
+        g.addEdge(u, v, w);
+    }
+
+    int start;
+    cout << "Enter starting vertex: ";
+    cin >> start;
+
+    g.dijkstra(start);
+
+    return 0;
+}
+======================================================================================================================================================
+======================================================================================================================================================
